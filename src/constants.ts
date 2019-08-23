@@ -1,5 +1,6 @@
 export const ORGANISATION = 'Monocle';
 export const PROJECT = 'Server';
+export const WEB_SOCKET_URI = 'ws://151.80.44.148:9854';
 
 interface IMonocleNavItem {
   id: string;

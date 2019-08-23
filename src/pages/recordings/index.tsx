@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { DataTable } from 'carbon-components-react';
 
+import { WEB_SOCKET_URI } from '../../constants';
 import Shell from '../../components/Shell';
+import useRecordings from './use-recordings';
 
 const {
   TableContainer,
@@ -18,31 +20,8 @@ const {
 
 const TableExpandRowX: any = TableExpandRow;
 
-const rows = [
-  {
-    id: '1',
-    name: 'DOOR-1',
-    state: 'OK',
-    location: 'Warehouse East Entrance',
-    retentionTime: '1h',
-  },
-  {
-    id: '2',
-    name: 'DOOR-2',
-    state: 'OK',
-    location: 'Warehouse East External',
-    retentionTime: '1h',
-  },
-  {
-    id: '3',
-    name: 'SHOP-1',
-    state: 'OK',
-    location: 'Till 1',
-    retentionTime: '1h',
-  },
-];
-
 const headers = [
+  { key: 'token', header: 'Token' },
   { key: 'location', header: 'Location' },
   { key: 'name', header: 'Name' },
   { key: 'state', header: 'Status' },
@@ -52,6 +31,19 @@ const headers = [
 const RECORDINGS_TABLE_TITLE = 'Recordings';
 
 const Recordings: React.FC = () => {
+  const { recordingIds } = useRecordings(WEB_SOCKET_URI);
+
+  console.log(recordingIds);
+
+  const rows = recordingIds.map((token) => ({
+    id: token,
+    token,
+    name: '',
+    state: '',
+    location: '',
+    retentionTime: '',
+  }));
+
   return (
     <Shell>
       <DataTable
