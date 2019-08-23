@@ -50,7 +50,7 @@ const Recordings: React.FC = () => {
         rows={rows}
         headers={headers}
         render={({ rows, headers, getHeaderProps, getRowProps }) => (
-          <TableContainer title={RECORDINGS_TABLE_TITLE}>
+          <TableContainer title={RECORDINGS_TABLE_TITLE} description={`View the available recording configurations`}>
             <Table>
               <TableHead>
                 <TableRow>

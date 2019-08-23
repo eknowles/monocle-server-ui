@@ -14,10 +14,5 @@ export const NAV_ITEMS: IMonocleNavItem[] = [
     id: 'recordings',
     path: '/recordings',
     label: 'Recordings',
-  },
-  {
-    id: 'sources',
-    path: '/sources',
-    label: 'Sources',
   }
 ];
