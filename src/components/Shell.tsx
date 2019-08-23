@@ -1,14 +1,10 @@
 import {
   Header,
   HeaderContainer,
-  HeaderMenuButton,
   HeaderMenuItem,
   HeaderName,
   HeaderNavigation,
-  HeaderSideNavItems,
   Content,
-  SideNav,
-  SideNavItems,
   SkipToContent,
 } from 'carbon-components-react';
 import React from 'react';

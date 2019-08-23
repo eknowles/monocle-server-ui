@@ -1,5 +1,11 @@
 # Monocle Server UI
 
+create a .env file with...
+
+```bash
+SASS_PATH=node_modules:src
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
