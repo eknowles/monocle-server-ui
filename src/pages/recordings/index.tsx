@@ -4,6 +4,7 @@ import { DataTable } from 'carbon-components-react';
 import { WEB_SOCKET_URI } from '../../constants';
 import Shell from '../../components/Shell';
 import useRecordings from './use-recordings';
+import { Monocle } from '../../types';
 
 const {
   TableContainer,
@@ -24,24 +25,24 @@ const headers = [
   { key: 'token', header: 'Token' },
   { key: 'location', header: 'Location' },
   { key: 'name', header: 'Name' },
-  { key: 'state', header: 'Status' },
+  { key: 'activeJob', header: 'Active Job' },
   { key: 'retentionTime', header: 'Retention Time' },
 ];
 
 const RECORDINGS_TABLE_TITLE = 'Recordings';
 
 const Recordings: React.FC = () => {
-  const { recordingIds } = useRecordings(WEB_SOCKET_URI);
+  const { recordings } = useRecordings(WEB_SOCKET_URI);
 
-  console.log(recordingIds);
+  console.log(recordings);
 
-  const rows = recordingIds.map((token) => ({
-    id: token,
-    token,
-    name: '',
-    state: '',
-    location: '',
-    retentionTime: '',
+  const rows = recordings.map((recording: Monocle.IRecording) => ({
+    id: recording.token,
+    token: recording.token,
+    name: recording.name,
+    activeJob: recording.activeJob,
+    location: recording.location,
+    retentionTime: recording.retentionTime,
   }));
 
   return (

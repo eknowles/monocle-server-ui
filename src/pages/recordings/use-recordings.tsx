@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
+import { Monocle } from '../../types';
 
 const useRecordings = (url: string) => {
-  const [recordingIds, setRecordingIds] = useState<string[]>([]);
+  const [recordings, setRecordings] = useState<Monocle.IRecordings['recordings']>([]);
 
   useEffect(() => {
     const socket = new WebSocket(`${url}/recordings`);
 
     socket.onmessage = ({ data }) => {
-      const { recordingsAdded } = JSON.parse(data);
-      if (recordingsAdded && recordingsAdded.length) {
-        setRecordingIds((currentIds) => [...currentIds, ...recordingsAdded]);
-      }
+      const socketData = JSON.parse(data) as Monocle.IRecordings;
+      setRecordings(socketData.recordings);
     };
 
     return () => {
@@ -19,7 +18,7 @@ const useRecordings = (url: string) => {
   }, [url]);
 
   return {
-    recordingIds
+    recordings
   }
 };
 
