@@ -1,5 +1,5 @@
-export const ORGANISATION = 'MonocleVMS';
-export const PROJECT = 'Server';
+export const ORGANISATION = 'Monocle Security';
+export const PROJECT = 'Server VMS';
 export const WEB_SOCKET_URI = 'ws://151.80.44.148:9854';
 
 interface IMonocleNavItem {

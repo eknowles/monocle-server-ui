@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Shell from '../../components/Shell';
+import Shell from '../../components/NewShell';
 
 const Home: React.FC = () => {
   return (

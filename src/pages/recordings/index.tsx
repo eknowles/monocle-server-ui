@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataTable } from 'carbon-components-react';
 
 import { WEB_SOCKET_URI } from '../../constants';
-import Shell from '../../components/Shell';
+import Shell from '../../components/NewShell';
 import useRecordings from './use-recordings';
 import { Monocle } from '../../types';
 

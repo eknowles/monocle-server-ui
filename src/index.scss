@@ -14,6 +14,4 @@ $carbon--theme: $carbon--theme--g100;
 @include carbon--font-face-mono();
 @include carbon--font-face-sans();
 
-.bx--content {
-  background: transparent;
-}
+@import '~@carbon/ibm-security/scss/components/Shell/index';
