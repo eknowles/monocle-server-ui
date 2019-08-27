@@ -38,7 +38,7 @@ export namespace Monocle {
   export interface ISourceTrack {
     token: string;
     trackId: string;
-    state: string;
+    state: 'Error' | 'Idle' | 'Active';
     errorMessage: string;
   }
 

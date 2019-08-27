@@ -34,10 +34,14 @@ const headers = [
 
 const RECORDINGS_TABLE_TITLE = 'Recordings';
 
+const trackStatus = {
+  Error: 'error',
+  Idle: 'info',
+  Active: 'success'
+};
+
 const Recordings: React.FC = () => {
   const { recordings } = useRecordings(WEB_SOCKET_URI);
-
-  console.log(recordings);
 
   const rows = recordings.map((recording: Monocle.IRecording) => ({
     id: recording.token,
@@ -81,51 +85,24 @@ const Recordings: React.FC = () => {
                       <TableExpandedRow colSpan={headers.length + 1}>
                         <ul className={`ms-list`}>
                           <li className={`ms-list-item`}>
-                            <h4>Jobs</h4>
+                            <h5>Active Source Tracks</h5>
                             <ul className={`ms-list`}>
-                              {recordings.find((r) => r.token === row.id)!.jobs.map((j) => (
-                                <li className={`ms-list-item`}>
+                              {getActiveSourceTrackCards(recordings, row.id).map((t) => (
+                                <li className={`ms-list-item`} key={row.id + t.trackId}>
                                   <Card
                                     header={{
-                                      tag: j.name,
-                                      title: j.name,
+                                      tag: t.track.trackType,
+                                      title: `ID: ${t.trackId}`,
                                     }}
                                     body={{
-                                      text: 'yo'
+                                      text: t.track.description
                                     }}
                                     footer={{
                                       children: (
                                         <StatusIcon
-                                          description={'footerDescription'}
-                                          message={'footerDescription'}
-                                          status="success"
-                                        />
-                                      )
-                                    }}
-                                  />
-                                </li>
-                              ))}
-                            </ul>
-                          </li>
-                          <li className={`ms-list-item`}>
-                            <h4>Tracks</h4>
-                            <ul className={`ms-list`}>
-                              {recordings.find((r) => r.token === row.id)!.tracks.map((j) => (
-                                <li className={`ms-list-item`}>
-                                  <Card
-                                    header={{
-                                      tag: j.trackType,
-                                      title: j.trackType,
-                                    }}
-                                    body={{
-                                      text: j.description
-                                    }}
-                                    footer={{
-                                      children: (
-                                        <StatusIcon
-                                          description={'footerDescription'}
-                                          message={'footerDescription'}
-                                          status="success"
+                                          description={t.state}
+                                          message={t.state}
+                                          status={trackStatus[t.state]}
                                         />
                                       )
                                     }}
@@ -146,6 +123,13 @@ const Recordings: React.FC = () => {
       />
     </Shell>
   );
+};
+
+const getActiveSourceTrackCards = (recordings: Monocle.IRecording[], recordingToken: Monocle.IRecording['token']) => {
+  const { jobs, activeJob, tracks } = recordings.find((r) => r.token === recordingToken)!;
+  const sourceTracks = jobs.find((j) => j.token === activeJob)!.sources.reduce((a: Monocle.ISourceTrack[] = [], b) => ([...a, ...b.sourceTracks]), []);
+
+  return sourceTracks.map((st) => ({...st, track: tracks.find((t) => t.id === st.trackId)!}));
 };
 
 export default Recordings;
