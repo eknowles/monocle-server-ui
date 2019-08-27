@@ -1,0 +1,15 @@
+@import '~@carbon/themes/scss/mixins';
+@import '~@carbon/ibm-security/scss/components/Card/index';
+@import '~@carbon/ibm-security/scss/components/StatusIcon/index';
+
+.ms-list {
+  padding-top: $spacing-05;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.ms-list-item {
+  padding: 0 $spacing-05 $spacing-05 0;
+  width: min-content;
+}

@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { DataTable } from 'carbon-components-react';
+import { Card, StatusIcon } from '@carbon/ibm-security';
 
 import { WEB_SOCKET_URI } from '../../constants';
 import Shell from '../../components/Shell';
 import useRecordings from './use-recordings';
 import { Monocle } from '../../types';
+
+import './recordings.scss';
 
 const {
   TableContainer,
@@ -51,7 +54,10 @@ const Recordings: React.FC = () => {
         rows={rows}
         headers={headers}
         render={({ rows, headers, getHeaderProps, getRowProps }) => (
-          <TableContainer title={RECORDINGS_TABLE_TITLE} description={`View the available recording configurations`}>
+          <TableContainer
+            title={RECORDINGS_TABLE_TITLE}
+            description={`View the available recording configurations`}
+          >
             <Table>
               <TableHead>
                 <TableRow>
@@ -73,8 +79,62 @@ const Recordings: React.FC = () => {
                     </TableExpandRowX>
                     {row.isExpanded && (
                       <TableExpandedRow colSpan={headers.length + 1}>
-                        <h1>Track 1</h1>
-                        <p>Audio</p>
+                        <ul className={`ms-list`}>
+                          <li className={`ms-list-item`}>
+                            <h4>Jobs</h4>
+                            <ul className={`ms-list`}>
+                              {recordings.find((r) => r.token === row.id)!.jobs.map((j) => (
+                                <li className={`ms-list-item`}>
+                                  <Card
+                                    header={{
+                                      tag: j.name,
+                                      title: j.name,
+                                    }}
+                                    body={{
+                                      text: 'yo'
+                                    }}
+                                    footer={{
+                                      children: (
+                                        <StatusIcon
+                                          description={'footerDescription'}
+                                          message={'footerDescription'}
+                                          status="success"
+                                        />
+                                      )
+                                    }}
+                                  />
+                                </li>
+                              ))}
+                            </ul>
+                          </li>
+                          <li className={`ms-list-item`}>
+                            <h4>Tracks</h4>
+                            <ul className={`ms-list`}>
+                              {recordings.find((r) => r.token === row.id)!.tracks.map((j) => (
+                                <li className={`ms-list-item`}>
+                                  <Card
+                                    header={{
+                                      tag: j.trackType,
+                                      title: j.trackType,
+                                    }}
+                                    body={{
+                                      text: j.description
+                                    }}
+                                    footer={{
+                                      children: (
+                                        <StatusIcon
+                                          description={'footerDescription'}
+                                          message={'footerDescription'}
+                                          status="success"
+                                        />
+                                      )
+                                    }}
+                                  />
+                                </li>
+                              ))}
+                            </ul>
+                          </li>
+                        </ul>
                       </TableExpandedRow>
                     )}
                   </React.Fragment>
