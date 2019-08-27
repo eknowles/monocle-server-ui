@@ -25,9 +25,9 @@ const {
 const TableExpandRowX: any = TableExpandRow;
 
 const headers = [
-  { key: 'token', header: 'Token' },
-  { key: 'location', header: 'Location' },
   { key: 'name', header: 'Name' },
+  { key: 'location', header: 'Location' },
+  { key: 'token', header: 'Token' },
   { key: 'activeJob', header: 'Active Job' },
   { key: 'retentionTime', header: 'Retention Time' },
 ];
