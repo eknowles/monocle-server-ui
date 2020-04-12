@@ -1,11 +1,10 @@
-import * as React from 'react';
-import { DataTable } from 'carbon-components-react';
 import { Card, StatusIcon } from '@carbon/ibm-security';
-
-import { WEB_SOCKET_URI } from '../../constants';
+import { DataTable } from 'carbon-components-react';
+import React, { useContext } from 'react';
 import Shell from '../../components/Shell';
-import useRecordings from './use-recordings';
-import { Monocle } from '../../types';
+import DataContext from '../../core/data/data.context';
+import { SourceTrackState } from '../../types';
+import recordingSelectors from './lib/recording-selectors';
 
 import './recordings.scss';
 
@@ -35,22 +34,35 @@ const headers = [
 const RECORDINGS_TABLE_TITLE = 'Recordings';
 
 const trackStatus = {
-  Error: 'error',
-  Idle: 'info',
-  Active: 'success'
+  [SourceTrackState.Error]: 'error',
+  [SourceTrackState.Idle]: 'info',
+  [SourceTrackState.Active]: 'success'
 };
 
 const Recordings: React.FC = () => {
-  const { recordings } = useRecordings(WEB_SOCKET_URI);
+  const data = useContext(DataContext);
+  const selector = recordingSelectors(data);
 
-  const rows = recordings.map((recording: Monocle.IRecording) => ({
-    id: recording.token,
-    token: recording.token,
-    name: recording.name,
-    activeJob: recording.activeJob,
-    location: recording.location,
-    retentionTime: recording.retentionTime,
-  }));
+  const rows = data
+    .recordings.allIds
+    .map((id) => data.recordings.byId[id])
+    .map((recording) => ({
+      id: recording.token,
+      token: recording.token,
+      name: (
+        <StatusIcon
+          message={recording.name}
+          description={recording.name}
+          status={selector.getRecordingErrorState({
+            ...recording,
+            id: recording.token
+          })}
+        />
+      ),
+      activeJob: recording.activeJob,
+      location: recording.location,
+      retentionTime: recording.retentionTime,
+    }));
 
   return (
     <Shell>
@@ -66,7 +78,7 @@ const Recordings: React.FC = () => {
               <TableHead>
                 <TableRow>
                   <TableExpandHeader />
-                  {headers.map(header => (
+                  {headers.map((header) => (
                     <TableHeader {...getHeaderProps({ header })}>
                       {header.header}
                     </TableHeader>
@@ -87,12 +99,12 @@ const Recordings: React.FC = () => {
                           <li className={`ms-list-item`}>
                             <h5>Active Source Tracks</h5>
                             <ul className={`ms-list`}>
-                              {getActiveSourceTrackCards(recordings, row.id).map((t) => (
+                              {selector.getActiveSourceTrackCards(row).map((t) => (
                                 <li className={`ms-list-item`} key={row.id + t.trackId}>
                                   <Card
                                     header={{
-                                      tag: t.track.trackType,
-                                      title: `ID: ${t.trackId}`,
+                                      tag: `ID: ${t.trackId}`,
+                                      title: t.track.trackType,
                                     }}
                                     body={{
                                       text: t.track.description
@@ -123,13 +135,6 @@ const Recordings: React.FC = () => {
       />
     </Shell>
   );
-};
-
-const getActiveSourceTrackCards = (recordings: Monocle.IRecording[], recordingToken: Monocle.IRecording['token']) => {
-  const { jobs, activeJob, tracks } = recordings.find((r) => r.token === recordingToken)!;
-  const sourceTracks = jobs.find((j) => j.token === activeJob)!.sources.reduce((a: Monocle.ISourceTrack[] = [], b) => ([...a, ...b.sourceTracks]), []);
-
-  return sourceTracks.map((st) => ({...st, track: tracks.find((t) => t.id === st.trackId)!}));
 };
 
 export default Recordings;

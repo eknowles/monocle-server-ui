@@ -1,65 +1,69 @@
-export namespace Monocle {
-  export interface IRoot {
-    message: string;
-    data: IData;
-  }
+export enum SourceTrackState {
+  Error = 'Error',
+  Idle = 'Idle',
+  Active = 'Active',
+}
 
-  export interface IData {
-    receivers: IReceiver[];
-    recordings: IRecording[];
-  }
+export interface IRoot {
+  message: string;
+  data: IData;
+}
 
-  export interface IReceiver {
-    token: string;
-    mediaUri: string;
-    username: string;
-    state: string;
-  }
+export interface IData {
+  receivers: IReceiver[];
+  recordings: IRecording[];
+}
 
-  export interface IRecording {
-    token: string;
-    location: string;
-    name: string;
-    retentionTime: number;
-    activeJob: string;
-    tracks: ITrack[];
-    jobs: IJob[];
-  }
+export interface IReceiver {
+  token: string;
+  mediaUri: string;
+  username: string;
+  state: string;
+}
 
-  export interface ITrack {
-    id: string;
-    token: string;
-    description: string;
-    trackType: string;
-    digitalSignature: boolean;
-    encryption: boolean;
-    flushFrequency: number;
-    totalTrackData: ITotalTrackData[];
-  }
+export interface IRecording {
+  token: string;
+  location: string;
+  name: string;
+  retentionTime: number;
+  activeJob: string;
+  tracks: ITrack[];
+  jobs: IJob[];
+}
 
-  export interface ITotalTrackData {
-    time: number;
-    data: number;
-  }
+export interface ITrack {
+  id: string;
+  token: string;
+  description: string;
+  trackType: string;
+  digitalSignature: boolean;
+  encryption: boolean;
+  flushFrequency: number;
+  totalTrackData: ITotalTrackData[];
+}
 
-  export interface IJob {
-    token: string;
-    enabled: boolean;
-    name: string;
-    priority: number;
-    sources: ISource[];
-  }
+export interface ITotalTrackData {
+  time: number;
+  data: number;
+}
 
-  export interface ISource {
-    token: string;
-    receiverToken: string;
-    sourceTracks: ISourceTrack[];
-  }
+export interface IJob {
+  token: string;
+  enabled: boolean;
+  name: string;
+  priority: number;
+  sources: ISource[];
+}
 
-  export interface ISourceTrack {
-    token: string;
-    trackId: string;
-    state: 'Error' | 'Idle' | 'Active';
-    errorMessage: string;
-  }
+export interface ISource {
+  token: string;
+  receiverToken: string;
+  sourceTracks: ISourceTrack[];
+}
+
+export interface ISourceTrack {
+  token: string;
+  trackId: string;
+  state: SourceTrackState;
+  errorMessage: string;
 }

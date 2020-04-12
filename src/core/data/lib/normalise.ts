@@ -1,5 +1,5 @@
 import { normalize, schema } from 'normalizr';
-import { Monocle } from '../../../types';
+import { IData } from '../../../types';
 
 const receivers = new schema.Entity('receivers', {}, { idAttribute: 'token' });
 const sourceTracks = new schema.Entity('sourceTracks', {}, { idAttribute: 'token' });
@@ -14,4 +14,4 @@ const mySchema = {
   }
 };
 
-export default (data: Monocle.IData) => normalize<Monocle.IData>(data, mySchema);
+export default (data: IData) => normalize<IData>(data, mySchema);
