@@ -1,5 +1,10 @@
 export namespace Monocle {
-  export interface IRecordings {
+  export interface IRoot {
+    message: string;
+    data: IData;
+  }
+
+  export interface IData {
     receivers: IReceiver[];
     recordings: IRecording[];
   }
@@ -21,6 +26,22 @@ export namespace Monocle {
     jobs: IJob[];
   }
 
+  export interface ITrack {
+    id: string;
+    token: string;
+    description: string;
+    trackType: string;
+    digitalSignature: boolean;
+    encryption: boolean;
+    flushFrequency: number;
+    totalTrackData: ITotalTrackData[];
+  }
+
+  export interface ITotalTrackData {
+    time: number;
+    data: number;
+  }
+
   export interface IJob {
     token: string;
     enabled: boolean;
@@ -40,14 +61,5 @@ export namespace Monocle {
     trackId: string;
     state: 'Error' | 'Idle' | 'Active';
     errorMessage: string;
-  }
-
-  export interface ITrack {
-    id: string;
-    description: string;
-    trackType: string;
-    digitalsignature: boolean;
-    encryption: boolean;
-    flushFrequency: number;
   }
 }

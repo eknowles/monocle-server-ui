@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from "react";
-import { RouteComponentProps } from "@reach/router";
+import { RouteComponentProps } from '@reach/router';
+import React, { FunctionComponent } from 'react';
 
 type Props = { component: FunctionComponent } & RouteComponentProps;
 
