@@ -53,10 +53,10 @@ const Recordings: React.FC = () => {
         <StatusIcon
           message={recording.name}
           description={recording.name}
-          status={selector.getRecordingErrorState({
+          status={trackStatus[selector.getRecordingErrorState({
             ...recording,
             id: recording.token
-          })}
+          })]}
         />
       ),
       activeJob: recording.activeJob,

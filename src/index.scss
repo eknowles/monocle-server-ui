@@ -1,7 +1,4 @@
-$security--feature-flags: (
-  css-gridish: false,
-  ibm-type: false,
-);
+$security--feature-flags: ();
 
 @import '~@carbon/ibm-security/scss/index';
 
