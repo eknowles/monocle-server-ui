@@ -6,7 +6,7 @@ import DataContext from '../../core/data/data.context';
 import { SourceTrackState } from '../../types';
 import recordingSelectors from './lib/recording-selectors';
 
-import './recordings.scss';
+// import './recordings.scss';
 
 const {
   TableContainer,

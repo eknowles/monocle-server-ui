@@ -6,6 +6,12 @@ create a .env file with...
 SASS_PATH=node_modules:src
 ```
 
+# Protos
+
+Client/Server uses protobuf/grpc.
+
+If using a OS X for local development you will need `protoc` from brew (brew install protobuf) 
+
 ## Available Scripts
 
 In the project directory, you can run:

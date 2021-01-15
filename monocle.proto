@@ -1,0 +1,629 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+import "google/protobuf/wrappers.proto";
+
+package proto;
+
+enum Codec
+{
+  CodecMETADATA = 0;
+  CodecMJPEG = 1;
+  CodecMPEG4 = 2;
+  CodecH264 = 3;
+  CodecH265 = 4;
+  CodecOBJECTDETECTOR = 5;
+  CodecPCMU = 6;
+  CodecG726_32 = 7;
+}
+
+enum FileMonitorState
+{
+  FileMonitorStateUnavailable = 0;
+  FileMonitorStateAvailable = 1;
+}
+
+enum FileState
+{
+  FileStateUnmounted = 0;
+  FileStateMounted = 1;
+  FileStateMounting = 2;
+  FileStateUnmounting = 3;
+}
+
+enum GPSDeviceState
+{
+  GPSDeviceStateIdle = 0;
+  GPSDeviceStateActive = 1;
+  GPSDeviceStateError = 2;
+}
+
+enum ONVIFUserLevel
+{
+  ONVIFUserLevelNone = 0; // Should never be used, but protobuf requires a 0 entry
+  ONVIFUserLevelAnonymous = 1;
+  ONVIFUserLevelUser = 2;
+  ONVIFUserLevelOperator = 3;
+  ONVIFUserLevelAdministrator = 4;
+}
+
+enum PluginState
+{
+  PluginStateIdle = 0;
+  PluginStateActive = 1;
+  PluginStateDestroying = 2;
+  PluginStateError = 3;
+}
+
+enum ReceiverMode
+{
+  ReceiverModeAutoConnect = 0;
+  ReceiverModeAlwaysConnect = 1;
+  ReceiverModeNeverConnect = 2;
+}
+
+enum ReceiverState
+{
+  ReceiverStateNotConnected = 0;
+  ReceiverStateConnecting = 1;
+  ReceiverStateConnected = 2;
+}
+
+enum RecordingJobState
+{
+  RecordingJobStateIdle = 0;
+  RecordingJobStateActive = 1;
+  RecordingJobStateError = 2;
+  RecordingJobStateActiveNotRecording = 3;
+}
+
+enum Severity
+{
+  SeverityTrace = 0;
+  SeverityDebug = 1;
+  SeverityInfo = 2;
+  SeverityWarn = 3;
+  SeverityErr = 4;
+  SeverityCritical = 5;
+}
+
+enum TrackType
+{
+  TrackTypeVideo = 0;
+  TrackTypeAudio = 1;
+  TrackTypeMetadata = 2;
+}
+
+message File
+{
+  fixed64 token = 1;
+  string path = 2;
+  string mountpoint = 3;
+  fixed64 numchunks = 4;
+  fixed64 chunksize = 5;
+  bool automount = 6;
+}
+
+message Group
+{
+  fixed64 token = 1;
+  string name = 2;
+  bool manageusers = 3;
+  bool managerecordings = 4;
+  bool managemaps = 5;
+  bool managedevice = 6;
+  bool manageplugins = 7;
+  bool reboot = 8;
+  bool allrecordings = 9;
+  repeated fixed64 recordings = 10;
+}
+
+message Index
+{
+  fixed64 starttime = 1;
+  fixed64 endtime = 2;
+}
+
+message LogMessage
+{
+  fixed64 time = 1;
+  Severity severity = 2;
+  string message = 3;
+}
+
+message Map
+{
+  fixed64 token = 1;
+  string name = 2;
+  string location = 3;
+  string md5 = 4;
+}
+
+message Mount
+{
+  sint64 id = 1;
+  sint64 parentid = 2;
+  sint64 majorstdev = 3;
+  sint64 minorstdev = 4;
+  string path = 5;
+  string type = 6;
+  string source = 7;
+}
+
+message ONVIFUser
+{
+  fixed64 token = 1;
+  string username = 2;
+  ONVIFUserLevel onvifuserlevel = 3;
+}
+
+message Plugin
+{
+  fixed64 token = 1;
+  string name = 2;
+  bool enabled = 3;
+  string parameters = 4;
+  fixed64 priority = 5;
+  PluginState state = 6;
+  string statemessage = 7;
+}
+
+message Receiver
+{
+  fixed64 token = 1;
+  ReceiverMode mode = 2;
+  string uri = 3;
+  bool autocreated = 4;
+  string username = 5;
+  string password = 6;
+  repeated string parameters = 7;
+}
+
+message Recording
+{
+  fixed64 token = 1;
+  string sourceid = 2;
+  string name = 3;
+  string location = 4;
+  string description = 5;
+  string address = 6;
+  string content = 7;
+  fixed64 retentiontime = 8;
+  bool adaptivestreaming = 9;
+  bool relativelocation = 10;
+  double orientation = 11;
+  repeated RecordingJob jobs = 12;
+  repeated RecordingTrack tracks = 13;
+  google.protobuf.DoubleValue latitude = 14;
+  google.protobuf.DoubleValue longitude = 15;
+  google.protobuf.UInt64Value activejob = 16;
+}
+
+message RecordingJob
+{
+  fixed64 recordingtoken = 1;
+  fixed64 recordingjobtoken = 2;
+  string name = 3;
+  bool enabled = 4;
+  fixed64 priority = 5;
+  repeated RecordingJobSource recordingjobsources = 6;
+}
+
+message RecordingJobSource
+{
+  fixed64 recordingtoken = 1;
+  fixed64 recordingjobtoken = 2;
+  fixed64 recordingjobsourcetoken = 3;
+  fixed64 receivertoken = 4;
+  repeated RecordingJobSourceTrack recordingjobsourcetracks = 5;
+}
+
+message RecordingJobSourceTrack
+{
+  fixed64 recordingtoken = 1;
+  fixed64 recordingjobtoken = 2;
+  fixed64 recordingjobsourcetoken = 3;
+  fixed64 recordingjobsourcetracktoken = 4;
+  fixed32 recordingtrackid = 5;
+  repeated string parameters = 6;
+  RecordingJobState state = 7;
+  string error = 8;
+  repeated string activeparameters = 9;
+}
+
+message RecordingTrack
+{
+  fixed64 recordingtoken = 1;
+  fixed32 recordingtrackid = 2;
+  string token = 3;
+  TrackType tracktype = 4;
+  string description = 5;
+  bool fixedfiles = 6;
+  bool digitalsigning = 7;
+  bool encrypt = 8;
+  fixed32 flushfrequency = 9;
+  repeated fixed64 files = 10;
+  repeated TrackData totaltrackdata = 11;
+}
+
+message TrackData
+{
+  fixed64 time = 1;
+  fixed64 totaldata = 2;
+}
+
+message User
+{
+  fixed64 token = 1;
+  string username = 2;
+  fixed64 grouptoken = 3;
+}
+
+message Version
+{
+  sfixed64 major = 1;
+  sfixed64 minor = 2;
+  sfixed64 build = 3;
+}
+
+message State
+{
+  string name = 1;
+  string publickey = 2;
+  string architecture = 3;
+  Version version = 4;
+  fixed64 identifier = 5;
+  repeated string environmentvariables = 6;
+  repeated string commandlinevariables = 7;
+  repeated ONVIFUser onvifusers = 8;
+  repeated Group groups = 9;
+  repeated User users = 10;
+  repeated File files = 11;
+  repeated Receiver receivers = 12;
+  repeated Recording recordings = 13;
+  repeated LogMessage serverlogmessages = 14;
+  repeated Map maps = 15;
+  repeated Mount mounts = 16;
+  fixed64 locationtime = 17;
+  google.protobuf.DoubleValue latitude = 18;
+  google.protobuf.DoubleValue longitude = 19;
+  repeated Index locationindices = 20;
+  string gpsdevice = 21;
+  GPSDeviceState gpsdevicestate = 22;
+  string gpsdevicestatemessage = 23;
+  fixed64 locationretentiontime = 24;
+  repeated string openstreetmapbaseuris = 25;
+  repeated Plugin plugins = 26;
+}
+
+message FileAdded
+{
+  File file = 1;
+}
+
+message FileRemoved
+{
+  fixed64 token = 1;
+}
+
+message FileMonitorStateChanged
+{
+  fixed64 token = 1;
+  FileMonitorState state = 2;
+}
+
+message FileStateChanged
+{
+  fixed64 token = 1;
+  FileState state = 2;
+}
+
+message GPSDeviceChanged
+{
+  string gpsdevice = 1;
+}
+
+message GPSDeviceStateChanged
+{
+  fixed64 time = 1;
+  GPSDeviceState state = 2;
+  string message = 3;
+}
+
+message GroupAdded
+{
+  Group group = 1;
+}
+
+message GroupChanged
+{
+  Group group = 1;
+}
+
+message GroupRemoved
+{
+  fixed64 token = 1;
+}
+
+message LocationChanged
+{
+  fixed64 time = 1;
+  google.protobuf.DoubleValue latitude = 2;
+  google.protobuf.DoubleValue longitude = 3;
+}
+
+message LocationRetentionTimeChanged
+{
+  fixed64 locationretentiontime = 1;
+}
+
+message MapAdded
+{
+  Map map = 1;
+}
+
+message MapChanged
+{
+  Map map = 1;
+}
+
+message MapRemoved
+{
+  fixed64 token = 1;
+}
+
+message MountAdded
+{
+  Mount mount = 1;
+}
+
+message MountRemoved
+{
+  Mount mount = 1;
+}
+
+message NameChanged
+{
+  string name = 1;
+}
+
+message ONVIFUserAdded
+{
+  ONVIFUser onvifuser = 1;
+}
+
+message ONVIFUserChanged
+{
+  ONVIFUser onvifuser = 1;
+}
+
+message ONVIFUserRemoved
+{
+  fixed64 token = 1;
+}
+
+message OpenStreetMapBaseUrisChanged
+{
+  repeated string openstreetmapbaseuris = 1;
+}
+
+message PluginAdded
+{
+  Plugin plugin = 1;
+}
+
+message PluginChanged
+{
+  fixed64 token = 1;
+  bool enabled = 2;
+  string parameters = 3;
+  fixed64 priority = 4;
+  PluginState state = 5;
+  string statemessage = 6;
+}
+
+message PluginRemoved
+{
+  fixed64 token = 1;
+}
+
+message PluginStateChanged
+{
+  fixed64 token = 1;
+  PluginState state = 2;
+  string message = 3;
+}
+
+message ReceiverAdded
+{
+  Receiver receiver = 1;
+}
+
+message ReceiverChanged
+{
+  Receiver receiver = 1;
+}
+
+message ReceiverRemoved
+{
+  fixed64 token = 1;
+}
+
+message RecordingJobSourceAdded
+{
+  RecordingJobSource source = 1;
+}
+
+message RecordingJobSourceRemoved
+{
+  fixed64 recordingtoken = 1;
+  fixed64 recordingjobtoken = 2;
+  fixed64 recordingjobsourcetoken = 3;
+}
+
+message RecordingJobSourceTrackAdded
+{
+  RecordingJobSourceTrack track = 1;
+}
+
+message RecordingJobSourceTrackRemoved
+{
+  fixed64 recordingtoken = 1;
+  fixed64 recordingjobtoken = 2;
+  fixed64 recordingjobsourcetoken = 3;
+  fixed64 recordingjobsourcetracktoken = 4;
+}
+
+message RecordingLogMessage
+{
+  fixed64 token = 1;
+  LogMessage logmessage = 2;
+}
+
+message RecordingTrackLogMessage
+{
+  fixed64 recordingtoken = 1;
+  fixed32 trackid = 2;
+  LogMessage logmessage = 3;
+}
+
+message RecordingAdded
+{
+  Recording recording = 1;
+}
+
+message RecordingChanged
+{
+  Recording recording = 1;
+}
+
+message RecordingRemoved
+{
+  fixed64 token = 1;
+}
+
+message RecordingJobAdded
+{
+  RecordingJob recordingjob = 1;
+}
+
+message RecordingJobChanged
+{
+  RecordingJob recordingjob = 1;
+}
+
+message RecordingJobRemoved
+{
+  fixed64 recordingtoken = 1;
+  fixed64 recordingjobtoken = 2;
+}
+
+message RecordingTrackAdded
+{
+  RecordingTrack recordingtrack = 1;
+}
+
+message RecordingTrackChanged
+{
+  RecordingTrack recordingtrack = 1;
+}
+
+message RecordingTrackRemoved
+{
+  fixed64 recordingtoken = 1;
+  fixed32 recordingtrackid = 2;
+}
+
+message RecordingActiveJobChanged
+{
+  fixed64 recordingtoken = 1;
+  google.protobuf.UInt64Value activejob = 2;
+}
+
+message RecordingJobSourceTrackActiveParametersChanged
+{
+  fixed64 recordingtoken = 1;
+  fixed64 recordingjobtoken = 2;
+  fixed64 recordingjobsourcetoken = 3;
+  fixed64 recordingjobsourcetracktoken = 4;
+  repeated string activeparameters = 5;
+}
+
+message RecordingJobSourceTrackState
+{
+  fixed64 recordingtoken = 1;
+  fixed64 recordingjobtoken = 2;
+  fixed64 recordingjobsourcetoken = 3;
+  fixed64 recordingjobsourcetracktoken = 4;
+  fixed64 time = 5;
+  RecordingJobState state = 6;
+  string error = 7;
+}
+
+message RecordingTrackCodecAdded
+{
+  fixed64 recordingtoken = 1;
+  fixed32 recordingtrackid = 2;
+  fixed64 codecid = 3;
+  Codec codec = 4;
+  string parameters = 5;
+  fixed64 timestamp = 6;
+}
+
+message RecordingTrackCodecRemoved
+{
+  fixed64 recordingtoken = 1;
+  fixed32 recordingtrackid = 2;
+  fixed64 codecid = 3;
+}
+
+message ServerLogMessage
+{
+  LogMessage logmessage = 1;
+}
+
+message RecordingTrackSetData
+{
+  fixed64 recordingtoken = 1;
+  fixed32 recordingtrackid = 2;
+  repeated Index indices = 3;
+}
+
+message RecordingTrackDeleteData
+{
+  fixed64 recordingtoken = 1;
+  fixed32 recordingtrackid = 2;
+  google.protobuf.UInt64Value start = 3;
+  google.protobuf.UInt64Value end = 4;
+}
+
+message UserAdded
+{
+  User user = 1;
+}
+
+message UserChanged
+{
+  fixed64 token = 1;
+  fixed64 grouptoken = 2;
+}
+
+message UserRemoved
+{
+  fixed64 token = 1;
+}
+
+service SubscribeService
+{
+  rpc Subscribe(SubscribeRequest) returns (stream SubscribeResponse);
+}
+
+message SubscribeRequest
+{
+  
+}
+
+message SubscribeResponse
+{
+  google.protobuf.Any message = 1;
+}

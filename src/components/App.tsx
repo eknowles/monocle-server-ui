@@ -5,7 +5,7 @@ import Route from './Route';
 import RecordingsPage from '../pages/recordings';
 import HomePage from '../pages/home';
 
-export default () => {
+const App = () => {
   return (
     <Router>
       <Route component={HomePage} path="/" />
@@ -13,3 +13,5 @@ export default () => {
     </Router>
   );
 }
+
+export default App;

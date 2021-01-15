@@ -14,4 +14,6 @@ const mySchema = {
   }
 };
 
-export default (data: IData) => normalize<IData>(data, mySchema);
+const normalise = (data: IData) => normalize<IData>(data, mySchema);
+
+export default normalise;
