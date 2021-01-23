@@ -613,17 +613,68 @@ message UserRemoved
   fixed64 token = 1;
 }
 
-service SubscribeService
+message AddUserRequest
 {
-  rpc Subscribe(SubscribeRequest) returns (stream SubscribeResponse);
+  string username = 1;
+  string digest = 2;
+  fixed64 group = 3;
+}
+
+message AddUserResponse
+{
+
+}
+
+message RemoveUserRequest
+{
+  fixed64 usertoken = 1;
+}
+
+message RemoveUserResponse
+{
+
+}
+
+message AuthenticateRequest
+{
+  string username = 1;
+  string password = 2;
+}
+
+message AuthenticateResponse
+{
+  string jwttoken = 1;
+}
+
+message RefreshTokenRequest
+{
+
+}
+
+message RefreshTokenResponse
+{
+  string jwttoken = 1;
 }
 
 message SubscribeRequest
 {
-  
+
 }
 
 message SubscribeResponse
 {
   google.protobuf.Any message = 1;
+}
+
+service AuthService
+{
+  rpc Authenticate(AuthenticateRequest) returns (AuthenticateResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
+}
+
+service MonocleService
+{
+  rpc AddUser(AddUserRequest) returns (AddUserResponse);
+  rpc RemoveUser(RemoveUserRequest) returns (RemoveUserResponse);
+  rpc Subscribe(SubscribeRequest) returns (stream SubscribeResponse);
 }

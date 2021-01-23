@@ -1,13 +1,11 @@
-import * as React from 'react';
+import type { FC } from "react";
 
-import Shell from '../../components/Shell';
-
-const Home: React.FC = () => {
+const Home: FC = () => {
   return (
-    <Shell>
-      <h1>test</h1>
+    <div>
+      <h1>home</h1>
       <p>test</p>
-    </Shell>
+    </div>
   );
 };
 

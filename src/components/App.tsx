@@ -1,17 +1,26 @@
 import React from 'react';
-import { Router } from '@reach/router';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import Route from './Route';
-import RecordingsPage from '../pages/recordings';
 import HomePage from '../pages/home';
+import LoginPage from '../pages/login';
+import { ProvideAuth } from '../services/auth';
+import AuthButton from './AuthButton';
+import PrivateRoute from './PrivateRoute';
 
 const App = () => {
   return (
-    <Router>
-      <Route component={HomePage} path="/" />
-      <Route component={RecordingsPage} path="/recordings" />
-    </Router>
+    <ProvideAuth>
+      <BrowserRouter>
+        <AuthButton />
+        <Switch>
+          <PrivateRoute path="/app">
+            <HomePage />
+          </PrivateRoute>
+          <Route component={LoginPage} path="/login" />
+        </Switch>
+      </BrowserRouter>
+    </ProvideAuth>
   );
-}
+};
 
 export default App;

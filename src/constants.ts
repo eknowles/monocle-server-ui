@@ -1,6 +1,7 @@
 export const ORGANISATION = 'MonocleVMS';
 export const PROJECT = 'Server';
-export const WEB_SOCKET_URI = 'ws://151.80.44.148:9854';
+export const GRPC_SERVER = 'http://:8080';
+export const LOCALSTORAGE_AUTH_TOKEN_KEY = 'monocle-auth-token';
 
 interface IMonocleNavItem {
   id: string;
