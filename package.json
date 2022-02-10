@@ -13,7 +13,7 @@
     "carbon-components": "^10.26.0",
     "carbon-components-react": "^7.26.0",
     "carbon-icons": "^7.0.7",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "normalizr": "^3.6.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
